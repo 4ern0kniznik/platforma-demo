@@ -54,6 +54,9 @@ body[data-state="empty"] .st-empty{display:block}
 body[data-state="loading"] .st-loading{display:block}
 body[data-state="error"] .st-error{display:block}
 body[data-state="many"] .st-many{display:block}
+.step{display:none}
+body[data-login-step="phone"] .step-phone{display:block}
+body[data-login-step="code"] .step-code{display:block}
 .code-row{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px}
 .code-cells{display:flex;gap:10px;justify-content:center;margin:16px 0}
 .code-cells input{width:52px;height:56px;text-align:center;font-size:22px;border:1px solid var(--border-ctrl);border-radius:var(--r-ctrl);font-family:inherit}
@@ -71,7 +74,7 @@ body[data-width="desktop"] .code-cells input{height:48px}
 .center{text-align:center}
 </style>
 </head>
-<body data-state="norma" data-width="360">
+<body data-state="norma" data-width="360" data-login-step="phone">
 
 <div class="devpanel">
   <div class="row"><span class="lbl">Состояние:</span>
@@ -91,16 +94,33 @@ body[data-width="desktop"] .code-cells input{height:48px}
   <div class="logo">Platforma</div>
   <div class="card">
 
-    <!-- НОРМА: шаг 1, телефон заполнен примером -->
+    <!-- НОРМА: шаг 1 (телефон) и шаг 2 (код) — переключаются внутри одного состояния -->
     <div class="st st-norma">
-      <h1>Вход</h1>
-      <p class="subtitle">Введите номер телефона, на который вас пригласил администратор. Мы пришлём код по SMS.</p>
-      <div class="field">
-        <label for="phone-n">Номер телефона</label>
-        <input id="phone-n" type="tel" value="+7 (900) 123-45-67" inputmode="tel">
+
+      <div class="step step-phone">
+        <h1>Вход</h1>
+        <p class="subtitle">Введите номер телефона, на который вас пригласил администратор. Мы пришлём код по SMS.</p>
+        <div class="field">
+          <label for="phone-n">Номер телефона</label>
+          <input id="phone-n" type="tel" value="+7 (900) 123-45-67" inputmode="tel">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="goStep('code')">Получить код</button>
+        <p class="hint">Самостоятельная регистрация не работает — номер заводит администратор Platforma.</p>
       </div>
-      <button type="button" class="btn btn-primary" onclick="goState('loading')">Получить код</button>
-      <p class="hint">Самостоятельная регистрация не работает — номер заводит администратор Platforma.</p>
+
+      <div class="step step-code">
+        <h1>Введите код из SMS</h1>
+        <p class="phone-note">Код отправлен на номер +7 (900) 123-45-67 · <button type="button" onclick="goStep('phone')">Изменить номер</button></p>
+        <div class="code-cells" aria-label="Код из SMS">
+          <input maxlength="1" value="4">
+          <input maxlength="1" value="2">
+          <input maxlength="1" value="9">
+          <input maxlength="1" value="0">
+        </div>
+        <a href="02-postavshchik-tovar.html" class="btn btn-primary">Войти</a>
+        <p class="timer">Отправить код повторно через 0:52</p>
+      </div>
+
     </div>
 
     <!-- ПУСТО: шаг 1, поле не заполнено -->
@@ -132,7 +152,7 @@ body[data-width="desktop"] .code-cells input{height:48px}
     <!-- ОШИБКА: неверный код -->
     <div class="st st-error">
       <h1>Введите код из SMS</h1>
-      <p class="phone-note">Код отправлен на номер +7 (900) 123-45-67 · <button type="button" onclick="goState('norma')">Изменить номер</button></p>
+      <p class="phone-note">Код отправлен на номер +7 (900) 123-45-67 · <button type="button" onclick="goState('norma');goStep('phone')">Изменить номер</button></p>
       <div class="code-cells" aria-label="Код из SMS">
         <input maxlength="1" value="4" class="has-err">
         <input maxlength="1" value="2" class="has-err">
@@ -140,8 +160,8 @@ body[data-width="desktop"] .code-cells input{height:48px}
         <input maxlength="1" value="7" class="has-err">
       </div>
       <p class="err">⚠ Неверный код. Осталось 2 попытки — проверьте цифры или запросите новый код.</p>
-      <button type="button" class="btn btn-primary" style="margin-top:14px" onclick="goState('loading')">Войти</button>
-      <p class="timer">Код не приходит? <button type="button" style="color:var(--action);background:none;border:none;font:inherit;cursor:pointer;text-decoration:underline" onclick="goState('loading')">Отправить повторно</button></p>
+      <a href="02-postavshchik-tovar.html" class="btn btn-primary" style="margin-top:14px">Войти</a>
+      <p class="timer">Код не приходит? <button type="button" style="color:var(--action);background:none;border:none;font:inherit;cursor:pointer;text-decoration:underline" onclick="goState('norma');goStep('code')">Отправить повторно</button></p>
     </div>
 
     <!-- МНОГО ДАННЫХ: превышен лимит попыток -->
@@ -153,7 +173,7 @@ body[data-width="desktop"] .code-cells input{height:48px}
         <span>5 неверных попыток подряд — вход с этого номера временно недоступен. Это защита от подбора кода, ничего делать не нужно.</span>
       </div>
       <p class="timer" style="margin-top:0">Следующая попытка возможна через <strong>14:52</strong></p>
-      <a class="linkbtn" href="javascript:void(0)" onclick="goState('norma')">← Вернуться к вводу номера</a>
+      <a class="linkbtn" href="javascript:void(0)" onclick="goState('norma');goStep('phone')">← Вернуться к вводу номера</a>
     </div>
 
   </div>
@@ -167,6 +187,9 @@ function goState(name){
 function goWidth(name){
   document.body.setAttribute('data-width', name);
   document.querySelectorAll('[data-width-val]').forEach(b=>b.classList.toggle('active', b.dataset.widthVal===name));
+}
+function goStep(name){
+  document.body.setAttribute('data-login-step', name);
 }
 </script>
 </body>
