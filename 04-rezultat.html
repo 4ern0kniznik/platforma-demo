@@ -134,10 +134,10 @@ body[data-role="viewer"] .secret{display:none}
     <button data-role-val="viewer" onclick="goRole('viewer')">Viewer</button>
   </div>
   <div class="row"><span class="lbl">Пример цены (в «Норма»):</span>
-    <button data-ex-val="a" onclick="goExample('a')">11 499 ₽</button>
-    <button data-ex-val="b" onclick="goExample('b')">11 500 ₽</button>
-    <button data-ex-val="c" onclick="goExample('c')">14 499 ₽</button>
-    <button class="active" data-ex-val="d" onclick="goExample('d')">14 500 ₽</button>
+    <button data-ex-val="a" onclick="goExample('a')">10 999 ₽</button>
+    <button data-ex-val="b" onclick="goExample('b')">11 000 ₽</button>
+    <button data-ex-val="c" onclick="goExample('c')">12 999 ₽</button>
+    <button class="active" data-ex-val="d" onclick="goExample('d')">13 000 ₽</button>
   </div>
 </div>
 
@@ -161,9 +161,9 @@ body[data-role="viewer"] .secret{display:none}
 
   <!-- НОРМА: два уровня порога, три вердикта — переключатель примеров цены в devpanel -->
   <div class="st st-norma">
-    <p class="example-legend">Себестоимость во всех примерах — 10 000,00 ₽ на 01.09.2026. Минимальный порог — не ниже 15 %, ниже него не подаёмся. Рекомендуемая маржа — не ниже 45 %.</p>
+    <p class="example-legend">Себестоимость во всех примерах — 10 000,00 ₽ на 01.09.2026. Порог (пол) и цель у каждого оператора и партнёра свои и видны только им — здесь для примера настроек оператора взяты пол 10 % и цель 30 %.</p>
 
-    <!-- пример a: 11 499 ₽ → 14,99 % → ниже порога -->
+    <!-- пример a: 10 999 ₽ → 9,99 % → ниже порога -->
     <div class="ex ex-a">
       <div class="card">
         <span class="badge badge-ok">Полное совпадение</span>
@@ -171,24 +171,24 @@ body[data-role="viewer"] .secret{display:none}
           <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
           <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
           <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
-          <div class="row-item"><span class="k">Цена предложения</span><span class="v">11 499,00 ₽</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">10 999,00 ₽</span></div>
         </div>
       </div>
       <div class="card">
         <div class="margin-block tone-bad">
-          <div class="big secret">1 499,00 ₽</div>
-          <div class="pct">14,99 % маржи</div>
-          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — не дотянуто до минимума</div>
+          <div class="big secret">999,00 ₽</div>
+          <div class="pct">9,99 % маржи</div>
+          <div class="threshold">Пол 10 %, цель 30 % от себестоимости — не дотянуто даже до пола</div>
         </div>
       </div>
       <div class="verdict verdict-bad">
         <span class="ico">⛔</span>
-        <div><h2>Ниже порога — не участвуем</h2><p>Маржа 14,99 % ниже обязательного минимума 15 %. Правило порога не может быть перекрыто ничем другим — участие заблокировано автоматически.</p></div>
+        <div><h2>Ниже порога — не участвуем</h2><p>Маржа 9,99 % ниже обязательного пола 10 %. Правило порога не может быть перекрыто ничем другим — участие заблокировано автоматически.</p></div>
       </div>
       <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
     </div>
 
-    <!-- пример b: 11 500 ₽ → 15,00 % → ровно минимум, участвуем с оговоркой -->
+    <!-- пример b: 11 000 ₽ → 10,00 % → ровно пол, участвуем с оговоркой -->
     <div class="ex ex-b">
       <div class="card">
         <span class="badge badge-ok">Полное совпадение</span>
@@ -196,24 +196,24 @@ body[data-role="viewer"] .secret{display:none}
           <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
           <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
           <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
-          <div class="row-item"><span class="k">Цена предложения</span><span class="v">11 500,00 ₽</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">11 000,00 ₽</span></div>
         </div>
       </div>
       <div class="card">
         <div class="margin-block tone-warn">
-          <div class="big secret">1 500,00 ₽</div>
-          <div class="pct">15,00 % маржи</div>
-          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — минимум пройден ровно («не ниже» значит «не меньше»)</div>
+          <div class="big secret">1 000,00 ₽</div>
+          <div class="pct">10,00 % маржи</div>
+          <div class="threshold">Пол 10 %, цель 30 % от себестоимости — пол пройден ровно («не ниже» значит «не меньше»)</div>
         </div>
       </div>
       <div class="verdict verdict-warn">
         <span class="ico">⚠</span>
-        <div><h2>Участвуем, маржа ниже рекомендуемой</h2><p>Маржа 15,00 % — ровно на обязательном минимуме, но далеко от рекомендуемых 45 %. Участие не заблокировано, решение — за оператором.</p></div>
+        <div><h2>Участвуем, маржа ниже рекомендуемой</h2><p>Маржа 10,00 % — ровно на обязательном полу, но далеко от цели 30 %. Участие не заблокировано, решение — за оператором.</p></div>
       </div>
       <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
     </div>
 
-    <!-- пример c: 14 499 ₽ → 44,99 % → чуть ниже рекомендуемой -->
+    <!-- пример c: 12 999 ₽ → 29,99 % → чуть ниже цели -->
     <div class="ex ex-c">
       <div class="card">
         <span class="badge badge-ok">Полное совпадение</span>
@@ -221,24 +221,24 @@ body[data-role="viewer"] .secret{display:none}
           <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
           <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
           <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
-          <div class="row-item"><span class="k">Цена предложения</span><span class="v">14 499,00 ₽</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">12 999,00 ₽</span></div>
         </div>
       </div>
       <div class="card">
         <div class="margin-block tone-warn">
-          <div class="big secret">4 499,00 ₽</div>
-          <div class="pct">44,99 % маржи</div>
-          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — совсем немного не хватает до рекомендуемой</div>
+          <div class="big secret">2 999,00 ₽</div>
+          <div class="pct">29,99 % маржи</div>
+          <div class="threshold">Пол 10 %, цель 30 % от себестоимости — совсем немного не хватает до цели</div>
         </div>
       </div>
       <div class="verdict verdict-warn">
         <span class="ico">⚠</span>
-        <div><h2>Участвуем, маржа ниже рекомендуемой</h2><p>Маржа 44,99 % выше обязательного минимума 15 %, но не дотягивает до рекомендуемых 45 %. Участие не заблокировано, решение — за оператором.</p></div>
+        <div><h2>Участвуем, маржа ниже рекомендуемой</h2><p>Маржа 29,99 % выше обязательного пола 10 %, но не дотягивает до цели 30 %. Участие не заблокировано, решение — за оператором.</p></div>
       </div>
       <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
     </div>
 
-    <!-- пример d: 14 500 ₽ → 45,00 % → рекомендуемая маржа достигнута -->
+    <!-- пример d: 13 000 ₽ → 30,00 % → цель достигнута -->
     <div class="ex ex-d">
       <div class="card">
         <span class="badge badge-ok">Полное совпадение</span>
@@ -246,19 +246,19 @@ body[data-role="viewer"] .secret{display:none}
           <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
           <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
           <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
-          <div class="row-item"><span class="k">Цена предложения</span><span class="v">14 500,00 ₽</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">13 000,00 ₽</span></div>
         </div>
       </div>
       <div class="card">
         <div class="margin-block tone-ok">
-          <div class="big secret">4 500,00 ₽</div>
-          <div class="pct">45,00 % маржи</div>
-          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — оба уровня пройдены</div>
+          <div class="big secret">3 000,00 ₽</div>
+          <div class="pct">30,00 % маржи</div>
+          <div class="threshold">Пол 10 %, цель 30 % от себестоимости — оба уровня пройдены</div>
         </div>
       </div>
       <div class="verdict verdict-ok">
         <span class="ico">✅</span>
-        <div><h2>Участвуем</h2><p>Маржа не ниже рекомендуемых 45 % — лучший сценарий, можно передавать в подготовку документов.</p></div>
+        <div><h2>Участвуем</h2><p>Маржа не ниже цели 30 % — лучший сценарий, можно передавать в подготовку документов.</p></div>
       </div>
       <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
     </div>
@@ -308,21 +308,21 @@ body[data-role="viewer"] .secret{display:none}
         <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический с манжетой увеличенного размера и голосовым сопровождением измерений AXD-814-XL</span></div>
         <div class="row-item secret"><span class="k">Поставщик</span><span class="v">Общество с ограниченной ответственностью «Медицинское технологическое объединение «Северо-Западный регион»»</span></div>
         <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
-        <div class="row-item"><span class="k">Цена предложения</span><span class="v">11 499,00 ₽</span></div>
+        <div class="row-item"><span class="k">Цена предложения</span><span class="v">10 999,00 ₽</span></div>
       </div>
     </div>
 
     <div class="card">
       <div class="margin-block tone-bad">
-        <div class="big secret">1 499,00 ₽</div>
-        <div class="pct">14,99 % маржи</div>
-        <div class="threshold">Минимум 15,00 % от себестоимости, рекомендуется не ниже 45,00 % — не дотянуто даже до минимума</div>
+        <div class="big secret">999,00 ₽</div>
+        <div class="pct">9,99 % маржи</div>
+        <div class="threshold">Пол 10,00 %, цель 30,00 % от себестоимости — пример настроек оператора — не дотянуто даже до пола</div>
       </div>
     </div>
 
     <div class="verdict verdict-bad">
       <span class="ico">⛔</span>
-      <div><h2>Ниже порога — не участвуем</h2><p>Маржа 14,99 % ниже обязательного минимума 15,00 %. Правило порога не может быть перекрыто ничем другим — участие заблокировано автоматически.</p></div>
+      <div><h2>Ниже порога — не участвуем</h2><p>Маржа 9,99 % ниже обязательного пола 10,00 %. Правило порога не может быть перекрыто ничем другим — участие заблокировано автоматически.</p></div>
     </div>
 
     <a href="03-lot.html" class="btn btn-primary role-op-only">Рассчитать другой лот</a>
