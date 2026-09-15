@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Поставщик и товар · Platforma</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div style="background:#FEF3C7;color:#78350F;padding:12px 16px;font:14px/1.4 system-ui,sans-serif;text-align:center;border-bottom:1px solid #F5D98B">Снимок приложения v0.1.0 от 15.09.2026, данные вымышленные, формы не работают.</div>
+<div class="frame-outer"><div class="frame ">
+
+  <header class="topbar">
+    <div class="logo">Platforma</div>
+    <nav>
+      
+      <a href="02-postavshchik-tovar.html" class="active">Поставщики и товары</a>
+      <a href="03-lot.html" class="">Ввести лот</a>
+      
+    </nav>
+    <div class="user">Администратор Platforma · администратор · <a href="01-vhod.html">Выйти</a></div>
+  </header>
+
+
+<h1>Поставщик и товар</h1>
+<p class="subtitle">Заведите поставщика и его товар с категорией, кодом ОКПД2 и себестоимостью —
+  это основа для расчёта маржи.</p>
+
+
+
+
+
+<form method="post" action="#">
+  <div class="card">
+    <h2>Поставщик</h2>
+    <div class="field ">
+      <label for="legal_name">Название организации</label>
+      <input id="legal_name" name="legal_name" type="text" maxlength="500"
+             value="" placeholder="ООО «Название»">
+      
+    </div>
+    <div class="field-row">
+      <div class="field ">
+        <label for="inn">ИНН</label>
+        <input id="inn" name="inn" type="text" inputmode="numeric" maxlength="12"
+               value="" placeholder="10 цифр">
+        
+      </div>
+      <div class="field ">
+        <label for="ogrn">ОГРН</label>
+        <input id="ogrn" name="ogrn" type="text" inputmode="numeric" maxlength="15"
+               value="" placeholder="13 цифр">
+        
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field ">
+        <label for="contact_fio">Контактное лицо</label>
+        <input id="contact_fio" name="contact_fio" type="text" maxlength="200"
+               value="" placeholder="Фамилия Имя Отчество">
+        
+      </div>
+      <div class="field">
+        <label for="contact_phone">Телефон контакта</label>
+        <input id="contact_phone" name="contact_phone" type="tel" maxlength="30"
+               value="" placeholder="+7 (___) ___-__-__">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Товар</h2>
+    <div class="field ">
+      <label for="product_name">Наименование</label>
+      <input id="product_name" name="product_name" type="text" maxlength="500"
+             value="" placeholder="Например, тонометр автоматический">
+      
+    </div>
+    <div class="field-row">
+      <div class="field ">
+        <label for="category_id">Категория</label>
+        <select id="category_id" name="category_id">
+          <option value="">Выберите категорию</option>
+          
+          <option value="01a0a573-f4c8-7b4f-9903-e4d529ec2b9e"
+            >Небулайзеры / системы ингаляционной терапии</option>
+          
+          <option value="01a0a573-f4c8-7a67-8f69-d5ccfa0838d4"
+            >Тонометры</option>
+          
+          <option value="01a0a573-f4c8-7ff9-8f70-91c5982805fe"
+            >Кирпич</option>
+          
+          <option value="01a0a573-f4c8-7738-a7ad-5720124701de"
+            >Краска</option>
+          
+          <option value="01a0a573-f4c8-7e6c-80c9-33951214378e"
+            >Линолеум</option>
+          
+          <option value="01a0a573-f4c8-7e3d-ab63-a3c01166055e"
+            >Цемент</option>
+          
+          <option value="01a0a573-f4c8-703c-bc4d-80757968ada7"
+            >Электрика</option>
+          
+        </select>
+        
+      </div>
+      <div class="field ">
+        <label for="okpd2_code">Код ОКПД2</label>
+        <input id="okpd2_code" name="okpd2_code" type="text" maxlength="20"
+               value="" placeholder="например, 26.60.12.129">
+        
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field ">
+        <label for="article">Артикул / модель</label>
+        <input id="article" name="article" type="text" maxlength="100"
+               value="">
+        
+      </div>
+      <div class="field ">
+        <label for="unit">Единица измерения</label>
+        <input id="unit" name="unit" type="text" maxlength="20"
+               value="шт.">
+        
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field ">
+        <label for="cost_amount">Себестоимость, ₽</label>
+        <input id="cost_amount" name="cost_amount" type="text"
+               value="" placeholder="0,00">
+        
+      </div>
+      <div class="field ">
+        <label for="cost_valid_from">Действует с</label>
+        <input id="cost_valid_from" name="cost_valid_from" type="text"
+               value="" placeholder="ДД.ММ.ГГГГ">
+        
+      </div>
+    </div>
+    <p class="hint">Себестоимость хранится отдельно от цены предложения и маржи — правка одного
+      значения не меняет другое.</p>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Сохранить товар</button>
+</form>
+
+
+<div class="card">
+  <h2>Уже в базе</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Поставщик</th><th>Товар</th><th>Категория</th><th>ОКПД2</th></tr></thead>
+      <tbody>
+        
+        <tr>
+          <td>ООО «Тестовый поставщик»</td>
+          <td>Небулайзер демонстрационный НБ-200</td>
+          <td>Небулайзеры / системы ингаляционной терапии</td>
+          <td>26.60.13.200</td>
+        </tr>
+        
+        <tr>
+          <td>ООО «Тестовый поставщик»</td>
+          <td>Тонометр демонстрационный ТД-100</td>
+          <td>Тонометры</td>
+          <td>26.60.12.100</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+</div></div>
+</body>
+</html>

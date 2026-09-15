@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Новый лот · Platforma</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div style="background:#FEF3C7;color:#78350F;padding:12px 16px;font:14px/1.4 system-ui,sans-serif;text-align:center;border-bottom:1px solid #F5D98B">Снимок приложения v0.1.0 от 15.09.2026, данные вымышленные, формы не работают.</div>
+<div class="frame-outer"><div class="frame ">
+
+  <header class="topbar">
+    <div class="logo">Platforma</div>
+    <nav>
+      
+      <a href="02-postavshchik-tovar.html" class="">Поставщики и товары</a>
+      <a href="03-lot.html" class="active">Ввести лот</a>
+      
+    </nav>
+    <div class="user">Администратор Platforma · администратор · <a href="01-vhod.html">Выйти</a></div>
+  </header>
+
+
+<h1>Новый лот</h1>
+<p class="subtitle">Внесите данные закупки и одну позицию — Platforma сопоставит её с базой
+  и посчитает маржу.</p>
+
+
+
+<form method="post" action="#">
+  <div class="card">
+    <h2>Данные закупки</h2>
+    <div class="field ">
+      <label for="external_number">Номер закупки</label>
+      <input id="external_number" name="external_number" type="text" maxlength="50"
+             value="" placeholder="например, 0373200586425000090">
+      
+    </div>
+    <div class="field ">
+      <label for="customer_name">Заказчик</label>
+      <input id="customer_name" name="customer_name" type="text" maxlength="500"
+             value="" placeholder="Название организации-заказчика">
+      
+    </div>
+    <div class="field-row">
+      <div class="field ">
+        <label for="platform">Площадка</label>
+        <input id="platform" name="platform" type="text" maxlength="200"
+               value="" placeholder="zakupki.gov.ru">
+        
+      </div>
+      <div class="field">
+        <label for="law">Закон</label>
+        <select id="law" name="law">
+          <option selected>44-ФЗ</option>
+          <option >223-ФЗ</option>
+        </select>
+      </div>
+    </div>
+    <div class="field ">
+      <label for="deadline">Срок подачи</label>
+      <input id="deadline" name="deadline" type="text" value=""
+             placeholder="ДД.ММ.ГГГГ">
+      
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Позиция лота</h2>
+    <div class="field ">
+      <label for="description">Наименование / описание</label>
+      <input id="description" name="description" type="text" maxlength="1000"
+             value="" placeholder="Что требует заказчик">
+      
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="okpd2_code">Код ОКПД2 <span class="opt">(необязательно)</span></label>
+        <input id="okpd2_code" name="okpd2_code" type="text" maxlength="20"
+               value="" placeholder="если указан в закупке">
+      </div>
+      <div class="field">
+        <label for="quantity">Количество</label>
+        <input id="quantity" name="quantity" type="text" value=""
+               placeholder="например, 10">
+      </div>
+    </div>
+    <div class="field ">
+      <label for="unit_price">Цена за единицу, ₽</label>
+      <input id="unit_price" name="unit_price" type="text" value=""
+             placeholder="0,00">
+      
+    </div>
+    <p class="hint">Построчная цена заказчика идёт в расчёт маржи напрямую, без пересчёта
+      из общей НМЦК лота.</p>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Рассчитать</button>
+</form>
+
+</div></div>
+</body>
+</html>
