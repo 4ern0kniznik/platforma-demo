@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вход · Platforma</title>
+<style>
+:root{
+  --bg:#FFFFFF; --bg-soft:#F5F6F8; --bg-sunk:#EDEFF3;
+  --text:#14161A; --text-2:#5A6270; --text-inv:#FFFFFF;
+  --action:#2B5CE6; --action-h:#1E48C4; --action-p:#17399E; --action-bg:#EEF2FE;
+  --ok:#0F7A3D; --ok-bg:#E8F6EE;
+  --error:#C22B2B; --error-bg:#FDECEC;
+  --warn:#8A5A00; --warn-bg:#FFF4D6;
+  --border:#D6DAE1; --border-ctrl:#8B93A1;
+  --r-ctrl:8px; --r-card:12px; --r-modal:16px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s7:32px; --s9:48px;
+  --font:'Golos Text', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg-soft);color:var(--text);font-size:16px;line-height:1.5}
+a{color:var(--action)}
+.devpanel{position:sticky;top:0;z-index:50;background:#14161A;color:#fff;padding:10px 16px;font-size:13px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.devpanel .row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.devpanel .lbl{opacity:.65;margin-right:2px}
+.devpanel button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+.devpanel button.active{background:#fff;color:#14161A;border-color:#fff;font-weight:600}
+.frame-outer{display:flex;justify-content:center;padding:24px 12px 64px}
+.frame{width:100%;max-width:360px;transition:max-width .2s}
+body[data-width="desktop"] .frame{max-width:440px}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:28px 24px;margin-top:12px}
+.logo{font-weight:700;font-size:20px;margin-bottom:24px}
+h1{font-size:24px;line-height:32px;margin:0 0 6px}
+.subtitle{color:var(--text-2);font-size:14px;margin:0 0 24px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.field input{width:100%;height:52px;border:1px solid var(--border-ctrl);border-radius:var(--r-ctrl);padding:0 14px;font-size:16px;font-family:inherit;background:var(--bg);color:var(--text)}
+body[data-width="desktop"] .field input{height:44px}
+.field input:focus{outline:2px solid var(--action);outline-offset:1px}
+.hint{font-size:13px;color:var(--text-2);margin-top:8px;line-height:1.5}
+.err{font-size:13px;color:var(--error);margin-top:8px;display:flex;gap:6px;align-items:flex-start}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:var(--r-ctrl);font-size:16px;font-weight:600;font-family:inherit;border:none;cursor:pointer;width:100%;text-decoration:none}
+body[data-width="desktop"] .btn{height:44px}
+.btn-primary{background:var(--action);color:#fff}
+.btn-primary:hover{background:var(--action-h)}
+.btn-primary:disabled{background:var(--border-ctrl);cursor:not-allowed}
+.btn-primary:focus-visible{outline:2px solid var(--action);outline-offset:2px}
+.linkbtn{display:block;text-align:center;margin-top:14px;font-size:14px;color:var(--action);text-decoration:none}
+.linkbtn:hover{text-decoration:underline}
+.st{display:none}
+body[data-state="norma"] .st-norma{display:block}
+body[data-state="empty"] .st-empty{display:block}
+body[data-state="loading"] .st-loading{display:block}
+body[data-state="error"] .st-error{display:block}
+body[data-state="many"] .st-many{display:block}
+.code-row{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px}
+.code-cells{display:flex;gap:10px;justify-content:center;margin:16px 0}
+.code-cells input{width:52px;height:56px;text-align:center;font-size:22px;border:1px solid var(--border-ctrl);border-radius:var(--r-ctrl);font-family:inherit}
+body[data-width="desktop"] .code-cells input{height:48px}
+.code-cells input.has-err{border-color:var(--error);background:var(--error-bg)}
+.phone-note{font-size:14px;color:var(--text-2);text-align:center;margin-bottom:4px}
+.phone-note button{background:none;border:none;color:var(--action);font-size:14px;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline}
+.banner{border-radius:var(--r-ctrl);padding:14px 16px;font-size:14px;margin-bottom:16px;display:flex;gap:10px}
+.banner-warn{background:var(--warn-bg);color:#5c3f00}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .7s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spinner{animation:none}}
+.timer{text-align:center;font-size:14px;color:var(--text-2);margin-top:14px}
+.block-icon{font-size:32px;text-align:center;margin-bottom:8px}
+.center{text-align:center}
+</style>
+</head>
+<body data-state="norma" data-width="360">
+
+<div class="devpanel">
+  <div class="row"><span class="lbl">Состояние:</span>
+    <button class="active" data-state-val="norma" onclick="goState('norma')">Норма</button>
+    <button data-state-val="empty" onclick="goState('empty')">Пусто</button>
+    <button data-state-val="loading" onclick="goState('loading')">Загрузка</button>
+    <button data-state-val="error" onclick="goState('error')">Ошибка</button>
+    <button data-state-val="many" onclick="goState('many')">Много данных</button>
+  </div>
+  <div class="row"><span class="lbl">Ширина:</span>
+    <button class="active" data-width-val="360" onclick="goWidth('360')">360</button>
+    <button data-width-val="desktop" onclick="goWidth('desktop')">Десктоп</button>
+  </div>
+</div>
+
+<div class="frame-outer"><div class="frame">
+  <div class="logo">Platforma</div>
+  <div class="card">
+
+    <!-- НОРМА: шаг 1, телефон заполнен примером -->
+    <div class="st st-norma">
+      <h1>Вход</h1>
+      <p class="subtitle">Введите номер телефона, на который вас пригласил администратор. Мы пришлём код по SMS.</p>
+      <div class="field">
+        <label for="phone-n">Номер телефона</label>
+        <input id="phone-n" type="tel" value="+7 (900) 123-45-67" inputmode="tel">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="goState('loading')">Получить код</button>
+      <p class="hint">Самостоятельная регистрация не работает — номер заводит администратор Platforma.</p>
+    </div>
+
+    <!-- ПУСТО: шаг 1, поле не заполнено -->
+    <div class="st st-empty">
+      <h1>Вход</h1>
+      <p class="subtitle">Введите номер телефона, на который вас пригласил администратор. Мы пришлём код по SMS.</p>
+      <div class="field">
+        <label for="phone-e">Номер телефона</label>
+        <input id="phone-e" type="tel" value="" placeholder="+7 (___) ___-__-__" inputmode="tel">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="goState('error')">Получить код</button>
+      <p class="hint">Самостоятельная регистрация не работает — номер заводит администратор Platforma.</p>
+    </div>
+
+    <!-- ЗАГРУЗКА: шаг 2, проверяем код -->
+    <div class="st st-loading">
+      <h1>Введите код из SMS</h1>
+      <p class="phone-note">Код отправлен на номер +7 (900) 123-45-67</p>
+      <div class="code-cells" aria-label="Код из SMS">
+        <input maxlength="1" value="4" disabled>
+        <input maxlength="1" value="2" disabled>
+        <input maxlength="1" value="9" disabled>
+        <input maxlength="1" value="0" disabled>
+      </div>
+      <button type="button" class="btn btn-primary" disabled><span class="spinner"></span>Проверяем код…</button>
+      <p class="timer">Отправить код повторно через 0:52</p>
+    </div>
+
+    <!-- ОШИБКА: неверный код -->
+    <div class="st st-error">
+      <h1>Введите код из SMS</h1>
+      <p class="phone-note">Код отправлен на номер +7 (900) 123-45-67 · <button type="button" onclick="goState('norma')">Изменить номер</button></p>
+      <div class="code-cells" aria-label="Код из SMS">
+        <input maxlength="1" value="4" class="has-err">
+        <input maxlength="1" value="2" class="has-err">
+        <input maxlength="1" value="1" class="has-err">
+        <input maxlength="1" value="7" class="has-err">
+      </div>
+      <p class="err">⚠ Неверный код. Осталось 2 попытки — проверьте цифры или запросите новый код.</p>
+      <button type="button" class="btn btn-primary" style="margin-top:14px" onclick="goState('loading')">Войти</button>
+      <p class="timer">Код не приходит? <button type="button" style="color:var(--action);background:none;border:none;font:inherit;cursor:pointer;text-decoration:underline" onclick="goState('loading')">Отправить повторно</button></p>
+    </div>
+
+    <!-- МНОГО ДАННЫХ: превышен лимит попыток -->
+    <div class="st st-many">
+      <div class="block-icon">⏳</div>
+      <h1 class="center">Слишком много попыток</h1>
+      <div class="banner banner-warn">
+        <span>⚠</span>
+        <span>5 неверных попыток подряд — вход с этого номера временно недоступен. Это защита от подбора кода, ничего делать не нужно.</span>
+      </div>
+      <p class="timer" style="margin-top:0">Следующая попытка возможна через <strong>14:52</strong></p>
+      <a class="linkbtn" href="javascript:void(0)" onclick="goState('norma')">← Вернуться к вводу номера</a>
+    </div>
+
+  </div>
+</div></div>
+
+<script>
+function goState(name){
+  document.body.setAttribute('data-state', name);
+  document.querySelectorAll('[data-state-val]').forEach(b=>b.classList.toggle('active', b.dataset.stateVal===name));
+}
+function goWidth(name){
+  document.body.setAttribute('data-width', name);
+  document.querySelectorAll('[data-width-val]').forEach(b=>b.classList.toggle('active', b.dataset.widthVal===name));
+}
+</script>
+</body>
+</html>

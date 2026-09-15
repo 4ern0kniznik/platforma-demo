@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platforma · прототип этапа 1</title>
+<style>
+:root{
+  --bg:#FFFFFF; --bg-soft:#F5F6F8; --bg-sunk:#EDEFF3;
+  --text:#14161A; --text-2:#5A6270;
+  --action:#2B5CE6; --action-h:#1E48C4; --action-bg:#EEF2FE;
+  --border:#D6DAE1;
+  --r-ctrl:8px; --r-card:12px;
+  --font:'Golos Text', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg-soft);color:var(--text);font-size:16px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:40px 16px 64px}
+.logo{font-weight:700;font-size:22px;margin-bottom:8px}
+h1{font-size:26px;line-height:34px;margin:0 0 6px}
+.subtitle{color:var(--text-2);font-size:15px;margin:0 0 28px}
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.item{display:block;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:18px 20px;text-decoration:none;color:var(--text)}
+.item:hover{border-color:var(--action);background:var(--action-bg)}
+.item .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:var(--bg-sunk);color:var(--text-2);font-size:14px;font-weight:700;margin-right:10px}
+.item .t{font-size:17px;font-weight:600}
+.item .d{font-size:14px;color:var(--text-2);margin:6px 0 0 38px}
+.item:hover .num{background:var(--action);color:#fff}
+.footer-note{margin-top:32px;font-size:13px;color:var(--text-2);background:var(--bg-sunk);border-radius:var(--r-ctrl);padding:14px 16px}
+.meta{font-size:13px;color:var(--text-2);margin:0 0 28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Platforma</div>
+  <h1>Прототип этапа 1</h1>
+  <p class="subtitle">Ядро: поставщики по категориям, сопоставление заявки с базой, расчёт маржи</p>
+  <p class="meta">Дата макета: 15.09.2026 · задача T-3 · дизайнер конторы Platforma</p>
+
+  <ul class="list">
+    <li><a class="item" href="01-vhod.html">
+      <span class="num">1</span><span class="t">Вход</span>
+      <div class="d">Код на номер +7 по приглашению — единственный способ входа</div>
+    </a></li>
+    <li><a class="item" href="02-postavshchik-tovar.html">
+      <span class="num">2</span><span class="t">Поставщик и товар</span>
+      <div class="d">Категория, код ОКПД2, себестоимость</div>
+    </a></li>
+    <li><a class="item" href="03-lot.html">
+      <span class="num">3</span><span class="t">Новый лот</span>
+      <div class="d">Данные закупки и одна позиция — кнопка «Рассчитать»</div>
+    </a></li>
+    <li><a class="item" href="04-rezultat.html">
+      <span class="num">4</span><span class="t">Результат расчёта</span>
+      <div class="d">Маржа, два уровня порога (15 % и 45 %) и вердикт — за три секунды</div>
+    </a></li>
+  </ul>
+
+  <p class="footer-note">Все имена, названия организаций, суммы и номера закупок на этих экранах вымышлены и
+  использованы только для демонстрации интерфейса. Каждый файл открывается отдельно и содержит переключатель
+  состояний («Норма / Пусто / Загрузка / Ошибка / Много данных») и ширины экрана («360 / Десктоп») —
+  переключатели вверху страницы служебные, часть реального интерфейса не составляют.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Результат расчёта · Platforma</title>
+<style>
+:root{
+  --bg:#FFFFFF; --bg-soft:#F5F6F8; --bg-sunk:#EDEFF3;
+  --text:#14161A; --text-2:#5A6270; --text-inv:#FFFFFF;
+  --action:#2B5CE6; --action-h:#1E48C4; --action-p:#17399E; --action-bg:#EEF2FE;
+  --ok:#0F7A3D; --ok-bg:#E8F6EE;
+  --error:#C22B2B; --error-bg:#FDECEC;
+  --warn:#8A5A00; --warn-bg:#FFF4D6;
+  --border:#D6DAE1; --border-ctrl:#8B93A1;
+  --r-ctrl:8px; --r-card:12px; --r-modal:16px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s7:32px; --s9:48px;
+  --font:'Golos Text', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg-soft);color:var(--text);font-size:16px;line-height:1.5}
+a{color:var(--action)}
+.devpanel{position:sticky;top:0;z-index:50;background:#14161A;color:#fff;padding:10px 16px;font-size:13px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.devpanel .row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.devpanel .lbl{opacity:.65;margin-right:2px}
+.devpanel button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+.devpanel button.active{background:#fff;color:#14161A;border-color:#fff;font-weight:600}
+.frame-outer{display:flex;justify-content:center;padding:0 0 64px}
+.frame{width:100%;max-width:360px;margin:0 auto;transition:max-width .2s;padding:0 12px}
+body[data-width="desktop"] .frame{max-width:900px;padding:0 24px}
+
+header.topbar{background:var(--bg);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px;border-radius:var(--r-card)}
+.topbar .logo{font-weight:700;font-size:16px;white-space:nowrap}
+.topbar nav{display:flex;gap:4px;flex-wrap:wrap}
+.topbar nav a{padding:7px 10px;border-radius:var(--r-ctrl);font-size:13px;color:var(--text-2);text-decoration:none}
+.topbar .user{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:10px;white-space:nowrap}
+.topbar .user a{color:var(--action);text-decoration:none;font-size:12px}
+body[data-width="desktop"] .topbar{padding:14px 24px}
+body[data-role="viewer"] .role-op-only{display:none}
+body[data-role="operator"] .role-viewer-only{display:none}
+
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:20px;margin-top:16px}
+h1{font-size:22px;line-height:28px;margin:16px 0 4px}
+body[data-width="desktop"] h1{font-size:28px;line-height:36px}
+.subtitle{color:var(--text-2);font-size:14px;margin:0 0 4px}
+.lot-meta{font-size:13px;color:var(--text-2);margin:0 0 16px}
+
+.verdict{border-radius:var(--r-card);padding:20px;margin-top:16px;display:flex;align-items:center;gap:14px}
+.verdict-ok{background:var(--ok-bg)}
+.verdict-warn{background:var(--warn-bg)}
+.verdict-bad{background:var(--error-bg)}
+.verdict .ico{font-size:28px;flex:none}
+.verdict h2{margin:0 0 2px;font-size:20px}
+.verdict-ok h2{color:var(--ok)}
+.verdict-warn h2{color:var(--warn)}
+.verdict-bad h2{color:var(--error)}
+.verdict p{margin:0;font-size:14px;color:var(--text)}
+
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600}
+.badge-ok{background:var(--ok-bg);color:var(--ok)}
+.badge-neutral{background:var(--bg-sunk);color:var(--text-2)}
+
+.rows{margin-top:4px}
+.row-item{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:15px}
+.row-item:last-child{border-bottom:none}
+.row-item .k{color:var(--text-2)}
+.row-item .v{font-weight:600;text-align:right}
+.row-item .v-lg{font-size:20px}
+.margin-block{text-align:center;padding:20px 0}
+.margin-block .big{font-size:36px;font-weight:700;line-height:1.1;color:var(--text)}
+body[data-width="desktop"] .margin-block .big{font-size:44px}
+.margin-block .pct{font-size:18px;color:var(--text-2);margin-top:4px;font-weight:600}
+.margin-block.tone-ok .pct{color:var(--ok)}
+.margin-block.tone-warn .pct{color:var(--warn)}
+.margin-block.tone-bad .pct{color:var(--error)}
+.margin-block .threshold{font-size:13px;color:var(--text-2);margin-top:10px}
+
+.example-legend{font-size:13px;color:var(--text-2);margin:0 0 4px}
+.ex{display:none}
+body[data-example="a"] .ex-a{display:block}
+body[data-example="b"] .ex-b{display:block}
+body[data-example="c"] .ex-c{display:block}
+body[data-example="d"] .ex-d{display:block}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:var(--r-ctrl);font-size:16px;font-weight:600;font-family:inherit;border:none;cursor:pointer;width:100%;text-decoration:none;margin-top:8px}
+body[data-width="desktop"] .btn{height:44px;width:auto;min-width:220px}
+.btn-primary{background:var(--action);color:#fff}
+.btn-primary:hover{background:var(--action-h)}
+.btn-secondary{background:var(--bg);color:var(--action);border:1px solid var(--border-ctrl)}
+
+.banner{border-radius:var(--r-ctrl);padding:14px 16px;font-size:14px;margin:16px 0;display:flex;gap:10px}
+.banner-warn{background:var(--warn-bg);color:#5c3f00}
+
+.empty-box{text-align:center;padding:36px 16px;background:var(--bg-sunk);border-radius:var(--r-card);margin-top:16px}
+.empty-box .ico{font-size:32px;margin-bottom:8px}
+.empty-box h3{margin:0 0 6px;font-size:18px}
+.empty-box p{margin:0 0 16px;color:var(--text-2);font-size:14px}
+
+.skeleton{background:linear-gradient(90deg,var(--bg-sunk) 25%,var(--border) 37%,var(--bg-sunk) 63%);background-size:400% 100%;animation:sk 1.4s ease infinite;border-radius:6px}
+@keyframes sk{0%{background-position:100% 0}100%{background-position:0 0}}
+@media (prefers-reduced-motion: reduce){.skeleton{animation:none}}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spinner{animation:none}}
+
+.st{display:none}
+body[data-state="norma"] .st-norma{display:block}
+body[data-state="empty"] .st-empty{display:block}
+body[data-state="loading"] .st-loading{display:block}
+body[data-state="error"] .st-error{display:block}
+body[data-state="many"] .st-many{display:block}
+
+body[data-role="viewer"] .secret{display:none}
+.viewer-note{font-size:13px;color:var(--text-2);background:var(--bg-sunk);border-radius:var(--r-ctrl);padding:10px 12px;margin-top:12px}
+</style>
+</head>
+<body data-state="norma" data-width="360" data-role="operator" data-example="d">
+
+<div class="devpanel">
+  <div class="row"><span class="lbl">Состояние:</span>
+    <button class="active" data-state-val="norma" onclick="goState('norma')">Норма</button>
+    <button data-state-val="empty" onclick="goState('empty')">Пусто</button>
+    <button data-state-val="loading" onclick="goState('loading')">Загрузка</button>
+    <button data-state-val="error" onclick="goState('error')">Ошибка</button>
+    <button data-state-val="many" onclick="goState('many')">Много данных</button>
+  </div>
+  <div class="row"><span class="lbl">Ширина:</span>
+    <button class="active" data-width-val="360" onclick="goWidth('360')">360</button>
+    <button data-width-val="desktop" onclick="goWidth('desktop')">Десктоп</button>
+  </div>
+  <div class="row"><span class="lbl">Роль:</span>
+    <button class="active" data-role-val="operator" onclick="goRole('operator')">Оператор / admin</button>
+    <button data-role-val="viewer" onclick="goRole('viewer')">Viewer</button>
+  </div>
+  <div class="row"><span class="lbl">Пример цены (в «Норма»):</span>
+    <button data-ex-val="a" onclick="goExample('a')">11 499 ₽</button>
+    <button data-ex-val="b" onclick="goExample('b')">11 500 ₽</button>
+    <button data-ex-val="c" onclick="goExample('c')">14 499 ₽</button>
+    <button class="active" data-ex-val="d" onclick="goExample('d')">14 500 ₽</button>
+  </div>
+</div>
+
+<div class="frame-outer"><div class="frame">
+
+  <header class="topbar">
+    <div class="logo">Platforma</div>
+    <nav>
+      <a href="02-postavshchik-tovar.html" class="role-op-only">Поставщики и товары</a>
+      <a href="03-lot.html" class="role-op-only">Ввести лот</a>
+    </nav>
+    <div class="user">
+      <span class="role-op-only">Мария Петрова · оператор</span>
+      <span class="role-viewer-only">Партнёр «Мед-Строй» · viewer</span>
+      · <a href="01-vhod.html">Выйти</a>
+    </div>
+  </header>
+
+  <h1>Результат расчёта</h1>
+  <p class="lot-meta">Лот № 0373200586425000090 · ГБУЗ «Городская поликлиника №5» · подача до 30.09.2026</p>
+
+  <!-- НОРМА: два уровня порога, три вердикта — переключатель примеров цены в devpanel -->
+  <div class="st st-norma">
+    <p class="example-legend">Себестоимость во всех примерах — 10 000,00 ₽ на 01.09.2026. Минимальный порог — не ниже 15 %, ниже него не подаёмся. Рекомендуемая маржа — не ниже 45 %.</p>
+
+    <!-- пример a: 11 499 ₽ → 14,99 % → ниже порога -->
+    <div class="ex ex-a">
+      <div class="card">
+        <span class="badge badge-ok">Полное совпадение</span>
+        <div class="rows" style="margin-top:14px">
+          <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
+          <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
+          <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">11 499,00 ₽</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="margin-block tone-bad">
+          <div class="big secret">1 499,00 ₽</div>
+          <div class="pct">14,99 % маржи</div>
+          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — не дотянуто до минимума</div>
+        </div>
+      </div>
+      <div class="verdict verdict-bad">
+        <span class="ico">⛔</span>
+        <div><h2>Ниже порога — не участвуем</h2><p>Маржа 14,99 % ниже обязательного минимума 15 %. Правило порога не может быть перекрыто ничем другим — участие заблокировано автоматически.</p></div>
+      </div>
+      <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
+    </div>
+
+    <!-- пример b: 11 500 ₽ → 15,00 % → ровно минимум, участвуем с оговоркой -->
+    <div class="ex ex-b">
+      <div class="card">
+        <span class="badge badge-ok">Полное совпадение</span>
+        <div class="rows" style="margin-top:14px">
+          <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
+          <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
+          <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">11 500,00 ₽</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="margin-block tone-warn">
+          <div class="big secret">1 500,00 ₽</div>
+          <div class="pct">15,00 % маржи</div>
+          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — минимум пройден ровно («не ниже» значит «не меньше»)</div>
+        </div>
+      </div>
+      <div class="verdict verdict-warn">
+        <span class="ico">⚠</span>
+        <div><h2>Участвуем, маржа ниже рекомендуемой</h2><p>Маржа 15,00 % — ровно на обязательном минимуме, но далеко от рекомендуемых 45 %. Участие не заблокировано, решение — за оператором.</p></div>
+      </div>
+      <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
+    </div>
+
+    <!-- пример c: 14 499 ₽ → 44,99 % → чуть ниже рекомендуемой -->
+    <div class="ex ex-c">
+      <div class="card">
+        <span class="badge badge-ok">Полное совпадение</span>
+        <div class="rows" style="margin-top:14px">
+          <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
+          <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
+          <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">14 499,00 ₽</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="margin-block tone-warn">
+          <div class="big secret">4 499,00 ₽</div>
+          <div class="pct">44,99 % маржи</div>
+          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — совсем немного не хватает до рекомендуемой</div>
+        </div>
+      </div>
+      <div class="verdict verdict-warn">
+        <span class="ico">⚠</span>
+        <div><h2>Участвуем, маржа ниже рекомендуемой</h2><p>Маржа 44,99 % выше обязательного минимума 15 %, но не дотягивает до рекомендуемых 45 %. Участие не заблокировано, решение — за оператором.</p></div>
+      </div>
+      <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
+    </div>
+
+    <!-- пример d: 14 500 ₽ → 45,00 % → рекомендуемая маржа достигнута -->
+    <div class="ex ex-d">
+      <div class="card">
+        <span class="badge badge-ok">Полное совпадение</span>
+        <div class="rows" style="margin-top:14px">
+          <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический AXD-806</span></div>
+          <div class="row-item secret"><span class="k">Поставщик</span><span class="v">ООО «Компания «БИВИ»»</span></div>
+          <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
+          <div class="row-item"><span class="k">Цена предложения</span><span class="v">14 500,00 ₽</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="margin-block tone-ok">
+          <div class="big secret">4 500,00 ₽</div>
+          <div class="pct">45,00 % маржи</div>
+          <div class="threshold">Минимум 15 % от себестоимости, рекомендуется не ниже 45 % — оба уровня пройдены</div>
+        </div>
+      </div>
+      <div class="verdict verdict-ok">
+        <span class="ico">✅</span>
+        <div><h2>Участвуем</h2><p>Маржа не ниже рекомендуемых 45 % — лучший сценарий, можно передавать в подготовку документов.</p></div>
+      </div>
+      <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах, оба уровня порога и вердикт.</div>
+    </div>
+
+    <a href="03-lot.html" class="btn btn-primary role-op-only">Рассчитать другой лот</a>
+  </div>
+
+  <!-- ПУСТО: лот без позиций, критерий 14 -->
+  <div class="st st-empty">
+    <div class="empty-box">
+      <div class="ico">🧾</div>
+      <h3>Расчёт не выполнен</h3>
+      <p>Лот не содержит ни одной позиции — добавьте хотя бы одну и повторите расчёт.</p>
+      <a href="03-lot.html" class="btn btn-primary role-op-only" style="margin:0 auto">Ввести лот заново</a>
+    </div>
+  </div>
+
+  <!-- ЗАГРУЗКА -->
+  <div class="st st-loading">
+    <div class="card">
+      <div class="skeleton" style="height:22px;width:140px;margin-bottom:16px"></div>
+      <div class="skeleton" style="height:20px;margin-bottom:10px"></div>
+      <div class="skeleton" style="height:20px;margin-bottom:10px"></div>
+      <div class="skeleton" style="height:20px"></div>
+    </div>
+    <div class="card" style="text-align:center">
+      <span class="spinner" style="border-top-color:var(--action);border-color:rgba(43,92,230,.25)"></span>
+      <p style="color:var(--text-2);font-size:14px;margin:10px 0 0">Считаем маржу…</p>
+    </div>
+  </div>
+
+  <!-- ОШИБКА: источник данных недоступен, критерий 16 -->
+  <div class="st st-error">
+    <div class="banner banner-warn">
+      <span>⚠</span>
+      <span>Расчёт не выполнен — источник данных недоступен, повторите позже. Это техническая ошибка, а не означает, что лот не покрыт базой.</span>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="goState('loading')">Повторить</button>
+    <a href="03-lot.html" class="btn btn-secondary role-op-only">Вернуться к лоту</a>
+  </div>
+
+  <!-- МНОГО ДАННЫХ: ниже порога, длинные значения (крит. 2, 3) -->
+  <div class="st st-many">
+    <div class="card">
+      <span class="badge badge-ok">Полное совпадение</span>
+      <div class="rows" style="margin-top:14px">
+        <div class="row-item"><span class="k">Товар</span><span class="v">Тонометр автоматический с манжетой увеличенного размера и голосовым сопровождением измерений AXD-814-XL</span></div>
+        <div class="row-item secret"><span class="k">Поставщик</span><span class="v">Общество с ограниченной ответственностью «Медицинское технологическое объединение «Северо-Западный регион»»</span></div>
+        <div class="row-item secret"><span class="k">Себестоимость</span><span class="v">10 000,00 ₽ на 01.09.2026</span></div>
+        <div class="row-item"><span class="k">Цена предложения</span><span class="v">11 499,00 ₽</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="margin-block tone-bad">
+        <div class="big secret">1 499,00 ₽</div>
+        <div class="pct">14,99 % маржи</div>
+        <div class="threshold">Минимум 15,00 % от себестоимости, рекомендуется не ниже 45,00 % — не дотянуто даже до минимума</div>
+      </div>
+    </div>
+
+    <div class="verdict verdict-bad">
+      <span class="ico">⛔</span>
+      <div><h2>Ниже порога — не участвуем</h2><p>Маржа 14,99 % ниже обязательного минимума 15,00 %. Правило порога не может быть перекрыто ничем другим — участие заблокировано автоматически.</p></div>
+    </div>
+
+    <a href="03-lot.html" class="btn btn-primary role-op-only">Рассчитать другой лот</a>
+    <div class="viewer-note role-viewer-only">Себестоимость, маржа в рублях и выбранный поставщик — коммерческая тайна и в вашей роли не показываются. Доступны маржа в процентах и вердикт.</div>
+  </div>
+
+</div></div>
+
+<script>
+function goState(name){
+  document.body.setAttribute('data-state', name);
+  document.querySelectorAll('[data-state-val]').forEach(b=>b.classList.toggle('active', b.dataset.stateVal===name));
+}
+function goWidth(name){
+  document.body.setAttribute('data-width', name);
+  document.querySelectorAll('[data-width-val]').forEach(b=>b.classList.toggle('active', b.dataset.widthVal===name));
+}
+function goRole(name){
+  document.body.setAttribute('data-role', name);
+  document.querySelectorAll('[data-role-val]').forEach(b=>b.classList.toggle('active', b.dataset.roleVal===name));
+}
+function goExample(name){
+  document.body.setAttribute('data-example', name);
+  document.querySelectorAll('[data-ex-val]').forEach(b=>b.classList.toggle('active', b.dataset.exVal===name));
+}
+</script>
+</body>
+</html>
