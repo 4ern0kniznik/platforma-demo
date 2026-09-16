@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<div style="background:#FEF3C7;color:#78350F;padding:12px 16px;font:14px/1.4 system-ui,sans-serif;text-align:center;border-bottom:1px solid #F5D98B">Снимок приложения v0.1.0 от 15.09.2026, данные вымышленные, формы не работают.</div>
+<div style="background:#FEF3C7;color:#78350F;padding:12px 16px;font:14px/1.4 system-ui,sans-serif;text-align:center;border-bottom:1px solid #F5D98B">Снимок приложения v0.2.0 от 16.09.2026, данные вымышленные, формы не работают.</div>
 <div class="frame-outer"><div class="frame ">
 
   <header class="topbar">
@@ -53,6 +53,25 @@
         
       </div>
     </div>
+    
+    
+    <div class="field ">
+      <label for="direction_id">Направление</label>
+      <select id="direction_id" name="direction_id">
+        <option value="">Выберите направление</option>
+        
+        <option value="01a0aa6e-cdfb-7e0a-a3d3-fad241e1ace4"
+          
+          >Медицинские изделия</option>
+        
+        <option value="01a0aa6e-cdfc-74db-8b0f-3dc41e615c1f"
+          
+          >Стройматериалы</option>
+        
+      </select>
+      
+    </div>
+    
     <div class="field-row">
       <div class="field ">
         <label for="contact_fio">Контактное лицо</label>
@@ -82,25 +101,25 @@
         <select id="category_id" name="category_id">
           <option value="">Выберите категорию</option>
           
-          <option value="01a0a573-f4c8-7b4f-9903-e4d529ec2b9e"
+          <option value="01a0aa6e-cdd6-7fc6-aa87-607a9b64bdcb"
             >Небулайзеры / системы ингаляционной терапии</option>
           
-          <option value="01a0a573-f4c8-7a67-8f69-d5ccfa0838d4"
+          <option value="01a0aa6e-cdd6-70b9-a69b-2a1e1bb2b3d6"
             >Тонометры</option>
           
-          <option value="01a0a573-f4c8-7ff9-8f70-91c5982805fe"
+          <option value="01a0aa6e-cdd6-7460-ae2b-c3d411f475ec"
             >Кирпич</option>
           
-          <option value="01a0a573-f4c8-7738-a7ad-5720124701de"
+          <option value="01a0aa6e-cdd6-738d-a313-b9a84a0d9643"
             >Краска</option>
           
-          <option value="01a0a573-f4c8-7e6c-80c9-33951214378e"
+          <option value="01a0aa6e-cdd6-74fc-aaf8-cee5c51432a7"
             >Линолеум</option>
           
-          <option value="01a0a573-f4c8-7e3d-ab63-a3c01166055e"
+          <option value="01a0aa6e-cdd6-72df-85b1-e51982aa5c4b"
             >Цемент</option>
           
-          <option value="01a0a573-f4c8-703c-bc4d-80757968ada7"
+          <option value="01a0aa6e-cdd6-781e-9728-63f86b607740"
             >Электрика</option>
           
         </select>
@@ -153,21 +172,23 @@
   <h2>Уже в базе</h2>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Поставщик</th><th>Товар</th><th>Категория</th><th>ОКПД2</th></tr></thead>
+      <thead><tr><th>Поставщик</th><th>Товар</th><th>Категория</th><th>ОКПД2</th><th>Документы</th></tr></thead>
       <tbody>
         
         <tr>
-          <td>ООО «Тестовый поставщик»</td>
-          <td>Небулайзер демонстрационный НБ-200</td>
-          <td>Небулайзеры / системы ингаляционной терапии</td>
-          <td>26.60.13.200</td>
+          <td>ООО «Медтех Юг»</td>
+          <td>Тонометр автоматический AXD-806</td>
+          <td>Тонометры</td>
+          <td>26.60.12.121</td>
+          <td><a href="05-dokumenty-postavshchika-polnyy.html">Документы</a></td>
         </tr>
         
         <tr>
-          <td>ООО «Тестовый поставщик»</td>
-          <td>Тонометр демонстрационный ТД-100</td>
+          <td>ООО «МедПоставка»</td>
+          <td>Тонометр автоматический BP-300</td>
           <td>Тонометры</td>
-          <td>26.60.12.100</td>
+          <td>26.60.12.122</td>
+          <td><a href="06-dokumenty-postavshchika-nepolnyy.html">Документы</a></td>
         </tr>
         
       </tbody>
