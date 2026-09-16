@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Документы поставщика · Platforma</title>
+<style>
+:root{
+  --bg:#FFFFFF; --bg-soft:#F5F6F8; --bg-sunk:#EDEFF3;
+  --text:#14161A; --text-2:#5A6270; --text-inv:#FFFFFF;
+  --action:#2B5CE6; --action-h:#1E48C4; --action-p:#17399E; --action-bg:#EEF2FE;
+  --ok:#0F7A3D; --ok-bg:#E8F6EE;
+  --error:#C22B2B; --error-bg:#FDECEC;
+  --warn:#8A5A00; --warn-bg:#FFF4D6;
+  --border:#D6DAE1; --border-ctrl:#8B93A1;
+  --r-ctrl:8px; --r-card:12px; --r-modal:16px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s7:32px; --s9:48px;
+  --font:'Golos Text', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg-soft);color:var(--text);font-size:16px;line-height:1.5}
+a{color:var(--action)}
+.devpanel{position:sticky;top:0;z-index:50;background:#14161A;color:#fff;padding:10px 16px;font-size:13px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.devpanel .row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.devpanel .lbl{opacity:.65;margin-right:2px}
+.devpanel button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+.devpanel button.active{background:#fff;color:#14161A;border-color:#fff;font-weight:600}
+.frame-outer{display:flex;justify-content:center;padding:0 0 64px}
+.frame{width:100%;max-width:360px;margin:0 auto;transition:max-width .2s;padding:0 12px}
+body[data-width="desktop"] .frame{max-width:900px;padding:0 24px}
+
+header.topbar{background:var(--bg);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px;border-radius:var(--r-card)}
+.topbar .logo{font-weight:700;font-size:16px;white-space:nowrap}
+.topbar nav{display:flex;gap:4px;flex-wrap:wrap}
+.topbar nav a{padding:7px 10px;border-radius:var(--r-ctrl);font-size:13px;color:var(--text-2);text-decoration:none}
+.topbar nav a.active{background:var(--action-bg);color:var(--action);font-weight:600}
+.topbar .user{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:10px;white-space:nowrap}
+body[data-width="desktop"] .topbar{padding:14px 24px}
+body[data-width="desktop"] .topbar nav a{font-size:14px}
+
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:20px;margin-top:16px}
+h1{font-size:22px;line-height:28px;margin:16px 0 4px}
+body[data-width="desktop"] h1{font-size:28px;line-height:36px}
+h2{font-size:16px;margin:0 0 14px;color:var(--text)}
+.subtitle{color:var(--text-2);font-size:14px;margin:0 0 16px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:var(--r-ctrl);font-size:16px;font-weight:600;font-family:inherit;border:none;cursor:pointer;width:100%;text-decoration:none}
+body[data-width="desktop"] .btn{height:44px;width:auto;min-width:200px}
+.btn-primary{background:var(--action);color:#fff}
+.btn-primary:hover{background:var(--action-h)}
+.btn-secondary{background:var(--bg);color:var(--action);border:1px solid var(--border-ctrl)}
+.btn-secondary:disabled{color:var(--text-2);border-color:var(--border);cursor:not-allowed}
+.btn-block{margin-top:16px}
+
+.banner{border-radius:var(--r-ctrl);padding:14px 16px;font-size:14px;margin:16px 0;display:flex;gap:10px;align-items:flex-start}
+.banner-ok{background:var(--ok-bg);color:#0b4d27}
+.banner-warn{background:var(--warn-bg);color:#5c3f00}
+.banner-error{background:var(--error-bg);color:#7a1c1c}
+.banner b{display:block;margin-bottom:2px}
+
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+.badge-ok{background:var(--ok-bg);color:var(--ok)}
+.badge-warn{background:var(--warn-bg);color:var(--warn)}
+.badge-bad{background:var(--error-bg);color:var(--error)}
+.badge-neutral{background:var(--bg-sunk);color:var(--text-2)}
+
+.doc-group-title{font-size:13px;color:var(--text-2);font-weight:600;margin:18px 0 8px;text-transform:none}
+.doc-group-title:first-child{margin-top:0}
+.doc-list{display:flex;flex-direction:column;gap:10px}
+.doc-item{border:1px solid var(--border);border-radius:var(--r-ctrl);padding:12px 14px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.doc-item .info{flex:1;min-width:180px}
+.doc-item .name{font-weight:600;font-size:15px;margin:0 0 4px}
+.doc-item .meta{font-size:13px;color:var(--text-2);margin:0}
+.doc-item .side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.doc-item a.action{font-size:13px;text-decoration:none;color:var(--action)}
+.doc-item a.action:hover{text-decoration:underline}
+
+.history{margin-top:16px}
+.history-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-2)}
+.history-item:last-child{border-bottom:none}
+.history-item .fname{color:var(--text);word-break:break-word}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.field .opt{font-weight:400;color:var(--text-2)}
+.field input,.field select{width:100%;height:52px;border:1px solid var(--border-ctrl);border-radius:var(--r-ctrl);padding:0 14px;font-size:16px;font-family:inherit;background:var(--bg);color:var(--text)}
+body[data-width="desktop"] .field input,body[data-width="desktop"] .field select{height:44px}
+.field input:focus,.field select:focus{outline:2px solid var(--action);outline-offset:1px}
+.field .hint{font-size:13px;color:var(--text-2);margin-top:6px}
+.field-row{display:flex;gap:12px;flex-wrap:wrap}
+.field-row .field{flex:1;min-width:150px}
+body[data-width="360"] .field-row{flex-direction:column}
+.check-row{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:-6px;margin-bottom:16px}
+.check-row input{width:20px;height:20px}
+
+.empty-box{text-align:center;padding:32px 16px;background:var(--bg-sunk);border-radius:var(--r-card);margin:16px 0}
+.empty-box .ico{font-size:32px;margin-bottom:8px}
+.empty-box h3{margin:0 0 6px;font-size:18px}
+.empty-box p{margin:0 0 16px;color:var(--text-2);font-size:14px}
+
+.skeleton{background:linear-gradient(90deg,var(--bg-sunk) 25%,var(--border) 37%,var(--bg-sunk) 63%);background-size:400% 100%;animation:sk 1.4s ease infinite;border-radius:6px;height:56px}
+@keyframes sk{0%{background-position:100% 0}100%{background-position:0 0}}
+@media (prefers-reduced-motion: reduce){.skeleton{animation:none}}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spinner{animation:none}}
+
+.st{display:none}
+body[data-state="norma"] .st-norma{display:block}
+body[data-state="empty"] .st-empty{display:block}
+body[data-state="loading"] .st-loading{display:block}
+body[data-state="error"] .st-error{display:block}
+body[data-state="many"] .st-many{display:block}
+
+.step{display:none}
+body[data-step="list"] .step-list{display:block}
+body[data-step="upload"] .step-upload{display:block}
+</style>
+</head>
+<body data-state="norma" data-width="360" data-step="list">
+
+<div class="devpanel">
+  <div class="row"><span class="lbl">Состояние:</span>
+    <button class="active" data-state-val="norma" onclick="goState('norma')">Норма</button>
+    <button data-state-val="empty" onclick="goState('empty')">Пусто</button>
+    <button data-state-val="loading" onclick="goState('loading')">Загрузка</button>
+    <button data-state-val="error" onclick="goState('error')">Ошибка</button>
+    <button data-state-val="many" onclick="goState('many')">Много данных</button>
+  </div>
+  <div class="row"><span class="lbl">Ширина:</span>
+    <button class="active" data-width-val="360" onclick="goWidth('360')">360</button>
+    <button data-width-val="desktop" onclick="goWidth('desktop')">Десктоп</button>
+  </div>
+</div>
+
+<div class="frame-outer"><div class="frame">
+
+  <!-- Навигация ведёт только на экраны этой задачи (T-4). Экраны «Поставщики и товары» и
+       «Ввести лот» из T-3 (макеты/T-3-yadro/) не связаны ссылкой — папки прототипов разные,
+       см. экраны.md. В реальной системе это один и тот же топбар. -->
+  <header class="topbar">
+    <div class="logo">Platforma</div>
+    <nav>
+      <a href="01-dokumenty-postavshchika.html" class="active">Документы поставщика</a>
+      <a href="03-spisok-paketov.html">Пакеты</a>
+    </nav>
+    <div class="user">Мария Петрова · оператор</div>
+  </header>
+
+  <h1>Документы поставщика</h1>
+  <p class="subtitle">ООО «Компания «БИВИ»» · ИНН 7801234567 · контакт Соколова Ирина Андреевна</p>
+
+  <!-- главное действие видно сразу под заголовком, без прокрутки -->
+  <button type="button" class="btn btn-primary" onclick="goStep('upload')">+ Загрузить документ</button>
+
+  <div class="step step-list">
+
+    <!-- ПУСТО: новый поставщик, ни одного документа -->
+    <div class="st st-empty">
+      <div class="empty-box">
+        <div class="ico">📄</div>
+        <h3>Документов пока нет</h3>
+        <p>Загрузите первый документ, чтобы поставщик мог получать пакеты. Без обязательного комплекта пакет по его лотам всегда будет неполным.</p>
+      </div>
+    </div>
+
+    <!-- ЗАГРУЗКА -->
+    <div class="st st-loading">
+      <div class="card">
+        <div class="skeleton" style="margin-bottom:10px;height:40px"></div>
+        <div class="skeleton" style="margin-bottom:10px"></div>
+        <div class="skeleton" style="margin-bottom:10px"></div>
+        <div class="skeleton" style="margin-bottom:10px"></div>
+        <div class="skeleton"></div>
+      </div>
+    </div>
+
+    <!-- ОШИБКА -->
+    <div class="st st-error">
+      <div class="banner banner-error">
+        <span>⚠</span>
+        <span><b>Не удалось загрузить документы поставщика.</b> Проверьте соединение и повторите — список не сохранён локально и требует ответа сервера.</span>
+      </div>
+      <button type="button" class="btn btn-secondary" onclick="goState('norma')">Повторить</button>
+    </div>
+
+    <!-- НОРМА: комплект готов -->
+    <div class="st st-norma">
+      <div class="banner banner-ok">
+        <span>✓</span>
+        <span><b>Комплект документов готов.</b> Все обязательные документы загружены и действуют — пакет по лотам этого поставщика будет собран полностью.</span>
+      </div>
+
+      <div class="card">
+        <div class="doc-group-title">Обязательные документы</div>
+        <div class="doc-list">
+          <div class="doc-item">
+            <div class="info"><p class="name">Устав организации</p><p class="meta">Загружен 12.03.2024 · срок не ограничен</p></div>
+            <div class="side"><span class="badge badge-ok">Действует</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Выписка из ЕГРЮЛ</p><p class="meta">Загружена 01.09.2026</p></div>
+            <div class="side"><span class="badge badge-ok">Действует до 01.10.2026</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Приказ о назначении руководителя</p><p class="meta">Загружен 15.01.2025 · срок не ограничен</p></div>
+            <div class="side"><span class="badge badge-ok">Действует</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Доверенность на подписанта</p><p class="meta">Загружена 03.06.2026</p></div>
+            <div class="side"><span class="badge badge-ok">Действует до 31.12.2026</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="doc-group-title">Опциональные документы</div>
+        <div class="doc-list">
+          <div class="doc-item">
+            <div class="info"><p class="name">Регистрационное удостоверение (скан)</p><p class="meta">Загружено 20.02.2026</p></div>
+            <div class="side"><span class="badge badge-ok">Действует до 15.06.2027</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Декларация соответствия</p><p class="meta">Не влияет на готовность пакета</p></div>
+            <div class="side"><span class="badge badge-neutral">Не загружена</span><a href="#" class="action" onclick="goStep('upload');return false">Загрузить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Лицензия</p><p class="meta">Не влияет на готовность пакета</p></div>
+            <div class="side"><span class="badge badge-neutral">Не загружена</span><a href="#" class="action" onclick="goStep('upload');return false">Загрузить</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- МНОГО ДАННЫХ: часть документов истекла/не загружена, есть история версий -->
+    <div class="st st-many">
+      <div class="banner banner-error">
+        <span>⚠</span>
+        <span><b>2 обязательных документа требуют внимания.</b> «Приказ о назначении руководителя» не загружен, «Выписка из ЕГРЮЛ» истекла 01.09.2026 — пакет по лотам поставщика будет собран как неполный, пока оба не исправлены.</span>
+      </div>
+
+      <div class="card">
+        <div class="doc-group-title">Обязательные документы</div>
+        <div class="doc-list">
+          <div class="doc-item">
+            <div class="info"><p class="name">Устав организации</p><p class="meta">Загружен 12.03.2024 · срок не ограничен</p></div>
+            <div class="side"><span class="badge badge-ok">Действует</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Выписка из ЕГРЮЛ</p><p class="meta">Прежняя версия — от 12.05.2026</p></div>
+            <div class="side"><span class="badge badge-bad">Истёк 01.09.2026</span><a href="#" class="action" onclick="goStep('upload');return false">Обновить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Приказ о назначении руководителя</p><p class="meta">Обязателен для категории «Медицинские изделия»</p></div>
+            <div class="side"><span class="badge badge-bad">Не загружен</span><a href="#" class="action" onclick="goStep('upload');return false">Загрузить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Доверенность на подписанта общества с ограниченной ответственностью «Компания «БИВИ»» на представителя в тендерных закупках</p><p class="meta">Загружена 03.06.2026</p></div>
+            <div class="side"><span class="badge badge-warn">Истекает через 5 дней (20.09.2026)</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="doc-group-title">Опциональные документы</div>
+        <div class="doc-list">
+          <div class="doc-item">
+            <div class="info"><p class="name">Регистрационное удостоверение (скан)</p><p class="meta">Загружено 20.02.2026</p></div>
+            <div class="side"><span class="badge badge-ok">Действует до 15.06.2027</span><a href="#" class="action" onclick="goStep('upload');return false">Заменить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Декларация соответствия</p><p class="meta">Не влияет на готовность пакета</p></div>
+            <div class="side"><span class="badge badge-neutral">Не загружена</span><a href="#" class="action" onclick="goStep('upload');return false">Загрузить</a></div>
+          </div>
+          <div class="doc-item">
+            <div class="info"><p class="name">Лицензия</p><p class="meta">Не влияет на готовность пакета</p></div>
+            <div class="side"><span class="badge badge-neutral">Не загружена</span><a href="#" class="action" onclick="goStep('upload');return false">Загрузить</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>История версий</h2>
+        <p class="subtitle" style="margin-bottom:8px">Старая версия не удаляется — остаётся в истории с меткой, что она недействительна.</p>
+        <div class="history">
+          <div class="history-item"><span class="fname">Выписка_из_ЕГРЮЛ_ООО_Компания_БИВИ_с_печатью_ФНС_и_отметкой_о_регистрации_от_12_05_2026.pdf</span><span>недействителен с 01.09.2026</span></div>
+          <div class="history-item"><span class="fname">Выписка_из_ЕГРЮЛ_ООО_Компания_БИВИ.pdf (версия от 10.02.2026)</span><span>недействителен с 12.05.2026</span></div>
+          <div class="history-item"><span class="fname">Доверенность_на_подписанта_Соколова_И_А.pdf (версия от 01.12.2025)</span><span>недействителен с 03.06.2026</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ЗАГРУЗКА ДОКУМЕНТА: отдельный шаг, доступен из любого состояния списка -->
+  <div class="step step-upload">
+    <div class="card">
+      <h2>Загрузить документ</h2>
+      <form>
+        <div class="field">
+          <label for="d-type">Тип документа</label>
+          <select id="d-type">
+            <optgroup label="Обязательные">
+              <option>Устав организации</option>
+              <option>Выписка из ЕГРЮЛ</option>
+              <option>Приказ о назначении руководителя</option>
+              <option selected>Доверенность на подписанта</option>
+            </optgroup>
+            <optgroup label="Опциональные">
+              <option>Регистрационное удостоверение (скан)</option>
+              <option>Декларация соответствия</option>
+              <option>Лицензия</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label for="d-file">Файл</label>
+          <input id="d-file" type="file">
+          <p class="hint">PDF, JPG или PNG, до 25 МБ. Файл виден только операторам Platforma, партнёру он не передаётся напрямую — только как часть пакета.</p>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="d-issued">Дата выдачи</label><input id="d-issued" type="text" value="15.09.2026" placeholder="ДД.ММ.ГГГГ"></div>
+          <div class="field"><label for="d-expires">Срок действия <span class="opt">(если есть)</span></label><input id="d-expires" type="text" value="31.12.2026" placeholder="ДД.ММ.ГГГГ"></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="d-noexp"><label for="d-noexp">Без срока действия</label></div>
+        <div class="field"><label for="d-note">Комментарий <span class="opt">(необязательно)</span></label><input id="d-note" type="text" placeholder="Например: обновлено по запросу оператора"></div>
+        <button type="button" class="btn btn-primary" onclick="goStep('list')">Сохранить документ</button>
+        <button type="button" class="btn btn-secondary btn-block" onclick="goStep('list')">Отмена</button>
+        <!-- в реальной системе — POST на docs:write и частичное HTMX-обновление списка,
+             новая версия документа появляется сверху, старая уходит в историю -->
+      </form>
+    </div>
+  </div>
+
+</div></div>
+
+<script>
+function goState(name){
+  document.body.setAttribute('data-state', name);
+  document.querySelectorAll('[data-state-val]').forEach(b=>b.classList.toggle('active', b.dataset.stateVal===name));
+}
+function goWidth(name){
+  document.body.setAttribute('data-width', name);
+  document.querySelectorAll('[data-width-val]').forEach(b=>b.classList.toggle('active', b.dataset.widthVal===name));
+}
+function goStep(name){
+  document.body.setAttribute('data-step', name);
+}
+</script>
+</body>
+</html>
